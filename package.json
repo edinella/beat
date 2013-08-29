@@ -1,0 +1,8 @@
+{
+  "name": "beat",
+  "description": "Beating the rhythm of life",
+  "author": "Ezequias Dinella <ezequias.net@gmail.com>",
+  "repository": "git://github.com/edinella/beat.git",
+  "version": "0.0.1",
+  "license": "MIT"
+}

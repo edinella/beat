@@ -1,9 +1,9 @@
 {
   "name": "beat",
-  "description": "Beating your app in the rhythm of life",
+  "description": "Simple dependency injection for node",
   "author": "Ezequias Dinella <ezequias.net@gmail.com>",
   "repository": "git://github.com/edinella/beat.git",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "license": "MIT",
   "main": "lib/beat.js",
   "dependencies": {

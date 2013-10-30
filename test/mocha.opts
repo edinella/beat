@@ -1,2 +1,5 @@
---reporter spec
---require test/support/setup.js
+--require test/setup
+--reporter dot
+--check-leaks
+--recursive
+--watch

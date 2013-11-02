@@ -125,5 +125,42 @@ describe('Beat', function(){
             });
             beat.get('z');
         });
+        it('.load method should import properties from a beat instance', function(done){
+            var x = {};
+            var y = {};
+            var anotherBeat = new Beat('another');
+            anotherBeat.value('myValueX', x);
+            anotherBeat.value('myValueY', y);
+            beat.load(anotherBeat);
+            beat.run(function(myValueX, myValueY){
+                expect(myValueX).to.be.equal(x);
+                expect(myValueY).to.be.equal(y);
+                done();
+            });
+        });
+        it('.load method should import factories from a beat instance', function(done){
+            var x = {};
+            var y = {};
+            var anotherBeat = new Beat('another');
+            anotherBeat.factory('myValueX', function(){return x;});
+            anotherBeat.factory('myValueY', function(){return y;});
+            beat.load(anotherBeat);
+            beat.run(function(myValueX, myValueY){
+                expect(myValueX).to.be.equal(x);
+                expect(myValueY).to.be.equal(y);
+                done();
+            });
+        });
+        it('.load method should import factories with dependencies from a beat instance', function(done){
+            var x = {};
+            var anotherBeat = new Beat('another');
+            anotherBeat.factory('generateX', function(X){return X;});
+            anotherBeat.value('X', x);
+            beat.load(anotherBeat);
+            beat.run(function(generateX){
+                expect(generateX).to.be.equal(x);
+                done();
+            });
+        });
     });
 });

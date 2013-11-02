@@ -89,6 +89,32 @@ myServer.value('port', 80);
 var port = myServer.get('port');
 ```
 
+**load(beatInstance)**: import properies and factories from an Beat instance
+
+Useful to bind different beats
+```js
+var config = new Beat('config');
+config.value('port', 80);
+
+myServer.load(config);
+myServer.run(function(app, port){
+  app.listen(port);
+});
+```
+or in different files
+
+```js
+var config = module.exports = new Beat('config');
+config.value('port', 80);
+```
+
+```js
+myServer.load(require('./config'));
+myServer.run(function(app, port){
+  app.listen(port);
+});
+```
+
 ### Annotation
 
 Methods `run` and `factory` can recieve annotated functions as arguments, that will be used for injection.

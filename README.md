@@ -75,10 +75,8 @@ myServer.factory('port', function(){
 The `fn` function can use injection annotation.
 
 ```js
-myServer.factory('port', function(){
-  var port = 80;
-  // some logic here
-  return port;
+myServer.run(function(server, port){
+  server.listen(port);
 });
 ```
 
@@ -89,7 +87,7 @@ myServer.value('port', 80);
 var port = myServer.get('port');
 ```
 
-**load(beatInstance)**: import properies and factories from an Beat instance
+**load(beatInstance)**: import properties and factories from an Beat instance
 
 Useful to bind different beats
 ```js
@@ -101,7 +99,7 @@ myServer.run(function(app, port){
   app.listen(port);
 });
 ```
-or in different files
+or at different files
 
 ```js
 var config = module.exports = new Beat('config');

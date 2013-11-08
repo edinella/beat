@@ -140,3 +140,58 @@ myServer.run(['http', 'serverPort', function(server, port) {
   // will inject objects bound to 'http' and 'serverPort' tokens
 }]);
 ```
+
+### Dependencies
+
+Beat instances can import properties from another instances.
+
+Therefore, declare them as array at constructor second parameter:
+
+```js
+var Beat = require('beat');
+var db = module.exports = new Beat('db', ['mongoose']);
+
+db.factory('db', function(mongoose, conf) {
+  if(conf.env == 'test')
+    mongoose.set('debug', true);
+  return mongoose.createConnection(conf.mongo).once('open', function() {
+    console.log('Mongoose connected');
+  });
+});
+```
+
+You can also use objects for aliasing:
+
+```js
+var Beat = require('beat');
+var db = module.exports = new Beat('db', ['mongoose', {conf:'../config.json'}]);
+
+db.factory('db', function(mongoose, conf) {
+  if(conf.env == 'test')
+    mongoose.set('debug', true);
+  return mongoose.createConnection(conf.mongo).once('open', function() {
+    console.log('Mongoose connected');
+  });
+});
+```
+_file paths starting with `/` will be relative to process cwd._
+
+If the required module provides a Beat object, their properties will be mixed with local ones:
+
+```js
+var Beat = require('beat');
+var routes = module.exports = new Beat('routes', [
+  '/lib/middlewares',
+  '/lib/models',
+  '/lib/app'
+]);
+
+routes.factory('routes', function routes(app, authMiddleware, ProductsModel){
+  app.all('/api/*', authMiddleware);
+  app.get('/api/products/:id', function show(req, res) {
+    ProductsModel.findById(req.params.id, function(err, doc) {
+      res.send(err?400:(doc||404));
+    });
+  });
+});
+```

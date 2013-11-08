@@ -143,7 +143,7 @@ myServer.run(['http', 'serverPort', function(server, port) {
 
 ### Dependencies
 
-Beat instances can import properties from another instances.
+Beat instantiation can declare modules as dependencies.
 
 Therefore, declare them as array at constructor second parameter:
 

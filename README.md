@@ -1,4 +1,4 @@
-# beat [![Build Status](https://travis-ci.org/edinella/beat.png?branch=master)](https://travis-ci.org/edinella/beat) [![Coverage Status](https://coveralls.io/repos/edinella/beat/badge.png)](https://coveralls.io/r/edinella/beat)
+# beat [![Build Status](https://travis-ci.org/edinella/beat.png?branch=master)](https://travis-ci.org/edinella/beat)
 Simple dependency injection for node
 
 [![NPM](https://nodei.co/npm/beat.png)](https://npmjs.org/package/beat)

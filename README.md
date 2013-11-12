@@ -195,3 +195,7 @@ routes.factory('routes', function routes(app, authMiddleware, ProductsModel){
   });
 });
 ```
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/edinella/beat/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+

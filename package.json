@@ -3,7 +3,7 @@
   "description": "Simple dependency injection for node",
   "author": "Ezequias Dinella <ezequias.net@gmail.com>",
   "repository": "git://github.com/edinella/beat.git",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "license": "MIT",
   "main": "lib/beat.js",
   "dependencies": {

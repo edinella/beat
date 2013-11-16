@@ -3,43 +3,6 @@ describe('Beat', function(){
   it('should be an construtor', function(){
     expect(Beat).to.be.an('function');
   });
-  describe('instance dependencies', function(){
-    it('can be a reference to a beat module', function(){
-      var testValue = {};
-      var beatA = new Beat('a');
-      beatA.value('x', testValue);
-      Beat.prototype._require = function(path){
-        if(path == 'beatA') return beatA;
-      };
-      var beatB = new Beat('b', ['beatA']);
-      expect(beatB.get('x')).to.be.equal(testValue);
-    });
-    it('can be a reference to any other module', function(){
-      var testValue = {};
-      Beat.prototype._require = function(path){
-        if(path == 'anyModule') return testValue;
-      };
-      var beat = new Beat('myBeat', ['anyModule']);
-      expect(beat.get('anyModule')).to.be.equal(testValue);
-    });
-    it('can be a reference to any other module with an alias', function(){
-      var testValue = {};
-      Beat.prototype._require = function(path){
-        if(path == 'anyModule') return testValue;
-      };
-      var beat = new Beat('myBeat', [{yes: 'anyModule'}]);
-      expect(beat.get('yes')).to.be.equal(testValue);
-    });
-    it('can be file paths rooted as the process', function(){
-      var testValue = {};
-      var beatA = new Beat('a', [{pkg: '/package'}]);
-      Beat.prototype._require = function(path){
-        expect(path).to.be.equal(process.cwd()+'/package');
-        return testValue;
-      };
-      expect(beatA.get('pkg')).to.be.equal(testValue);
-    });
-  });
   describe('instance', function(){
     var beat;
     beforeEach(function(){
@@ -198,6 +161,43 @@ describe('Beat', function(){
         expect(generateX).to.be.equal(x);
         done();
       });
+    });
+  });
+  describe('instance dependencies', function(){
+    it('can be a reference to a beat module', function(){
+      var testValue = {};
+      var beatA = new Beat('a');
+      beatA.value('x', testValue);
+      Beat.prototype._require = function(path){
+        if(path == 'beatA') return beatA;
+      };
+      var beatB = new Beat('b', ['beatA']);
+      expect(beatB.get('x')).to.be.equal(testValue);
+    });
+    it('can be a reference to any other module', function(){
+      var testValue = {};
+      Beat.prototype._require = function(path){
+        if(path == 'anyModule') return testValue;
+      };
+      var beat = new Beat('myBeat', ['anyModule']);
+      expect(beat.get('anyModule')).to.be.equal(testValue);
+    });
+    it('can be a reference to any other module with an alias', function(){
+      var testValue = {};
+      Beat.prototype._require = function(path){
+        if(path == 'anyModule') return testValue;
+      };
+      var beat = new Beat('myBeat', [{yes: 'anyModule'}]);
+      expect(beat.get('yes')).to.be.equal(testValue);
+    });
+    it('can be file paths rooted as the process', function(){
+      var testValue = {};
+      var beatA = new Beat('a', [{pkg: '/package'}]);
+      Beat.prototype._require = function(path){
+        expect(path).to.be.equal(process.cwd()+'/package');
+        return testValue;
+      };
+      expect(beatA.get('pkg')).to.be.equal(testValue);
     });
   });
 });

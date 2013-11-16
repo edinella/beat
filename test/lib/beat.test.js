@@ -1,3 +1,4 @@
+var ModuleReference = require('../../lib/ModuleReference');
 var Beat = require('../../');
 describe('Beat', function(){
   it('should be an construtor', function(){
@@ -168,7 +169,7 @@ describe('Beat', function(){
       var testValue = {};
       var beatA = new Beat('a');
       beatA.value('x', testValue);
-      Beat.prototype._require = function(path){
+      ModuleReference.prototype._require = function(path){
         if(path == 'beatA') return beatA;
       };
       var beatB = new Beat('b', ['beatA']);
@@ -176,7 +177,7 @@ describe('Beat', function(){
     });
     it('can be a reference to any other module', function(){
       var testValue = {};
-      Beat.prototype._require = function(path){
+      ModuleReference.prototype._require = function(path){
         if(path == 'anyModule') return testValue;
       };
       var beat = new Beat('myBeat', ['anyModule']);
@@ -184,7 +185,7 @@ describe('Beat', function(){
     });
     it('can be a reference to any other module with an alias', function(){
       var testValue = {};
-      Beat.prototype._require = function(path){
+      ModuleReference.prototype._require = function(path){
         if(path == 'anyModule') return testValue;
       };
       var beat = new Beat('myBeat', [{yes: 'anyModule'}]);
@@ -193,7 +194,7 @@ describe('Beat', function(){
     it('can be file paths rooted as the process', function(){
       var testValue = {};
       var beatA = new Beat('a', [{pkg: '/package'}]);
-      Beat.prototype._require = function(path){
+      ModuleReference.prototype._require = function(path){
         expect(path).to.be.equal(process.cwd()+'/package');
         return testValue;
       };

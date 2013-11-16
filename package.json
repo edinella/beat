@@ -5,7 +5,7 @@
   "repository": "git://github.com/edinella/beat.git",
   "version": "0.3.4",
   "license": "MIT",
-  "main": "lib/beat.js",
+  "main": "lib/Beat.js",
   "dependencies": {
   },
   "devDependencies": {

@@ -1,4 +1,5 @@
 var Block = require('../../lib/Block');
+
 describe('Block', function(){
   it('should be an construtor', function(){
     expect(Block).to.be.an('function');

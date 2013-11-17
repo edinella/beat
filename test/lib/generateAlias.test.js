@@ -1,4 +1,5 @@
 var generateAlias = require('../../lib/generateAlias');
+
 describe('generateAlias', function(){
   it('should be a function', function(){
     expect(generateAlias).to.be.an('function');

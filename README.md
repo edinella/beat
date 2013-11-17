@@ -195,3 +195,16 @@ routes.factory('routes', function routes(app, authMiddleware, ProductsModel){
   });
 });
 ```
+
+Is also possible to load dependencies after construction, with the same sintax:
+
+```js
+var Beat = require('beat');
+var routes = module.exports = new Beat('routes');
+
+routes.loadModules([
+  '/lib/middlewares',
+  '/lib/models',
+  '/lib/app'
+]);
+```

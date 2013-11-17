@@ -1,4 +1,5 @@
 var ModuleReference = require('../../lib/ModuleReference');
+var Block = require('../../lib/Block');
 var Beat = require('../../');
 describe('Beat', function(){
   it('should be an construtor', function(){
@@ -165,6 +166,20 @@ describe('Beat', function(){
     });
   });
   describe('instance dependencies', function(){
+    var originalMethod;
+    beforeEach(function(){
+      originalMethod = Beat.prototype.loadModules;
+    });
+    afterEach(function(){
+      Beat.prototype.loadModules = originalMethod;
+    });
+    it('can be loaded from constructor', function(){
+      var dependencies = [];
+      Beat.prototype.loadModules = function(modulesInfo){
+        expect(modulesInfo).to.be.equal(dependencies);
+      };
+      var beat = new Beat('a', dependencies);
+    });
     it('can be a reference to a beat module', function(){
       var testValue = {};
       var beatA = new Beat('a');
@@ -172,7 +187,8 @@ describe('Beat', function(){
       ModuleReference.prototype._require = function(path){
         if(path == 'beatA') return beatA;
       };
-      var beatB = new Beat('b', ['beatA']);
+      var beatB = new Beat('b');
+      beatB.loadModules(['beatA']);
       expect(beatB.get('x')).to.be.equal(testValue);
     });
     it('can be a reference to any other module', function(){
@@ -180,7 +196,8 @@ describe('Beat', function(){
       ModuleReference.prototype._require = function(path){
         if(path == 'anyModule') return testValue;
       };
-      var beat = new Beat('myBeat', ['anyModule']);
+      var beat = new Beat('myBeat');
+      beat.loadModules(['anyModule']);
       expect(beat.get('anyModule')).to.be.equal(testValue);
     });
     it('can be a reference to any other module with an alias', function(){
@@ -188,12 +205,14 @@ describe('Beat', function(){
       ModuleReference.prototype._require = function(path){
         if(path == 'anyModule') return testValue;
       };
-      var beat = new Beat('myBeat', [{yes: 'anyModule'}]);
+      var beat = new Beat('myBeat');
+      beat.loadModules([{yes: 'anyModule'}]);
       expect(beat.get('yes')).to.be.equal(testValue);
     });
     it('can be file paths rooted as the process', function(){
       var testValue = {};
-      var beatA = new Beat('a', [{pkg: '/package'}]);
+      var beatA = new Beat('a');
+      beatA.loadModules([{pkg: '/package'}]);
       ModuleReference.prototype._require = function(path){
         expect(path).to.be.equal(process.cwd()+'/package');
         return testValue;

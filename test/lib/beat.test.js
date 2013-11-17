@@ -1,6 +1,6 @@
-var ModuleReference = require('../../lib/ModuleReference');
+var Beat = require('../../');
 var Block = require('../../lib/Block');
-var Beat = require('../../lib/Beat');
+var ModuleReference = require('../../lib/ModuleReference');
 describe('Beat', function(){
   it('should be an construtor', function(){
     expect(Beat).to.be.an('function');

@@ -21,17 +21,38 @@ describe('Beat', function(){
       expect(spy.calledWith()).to.be.equal(true);
     });
     it('.value method should set a value to be obtained by .get', function(){
-      var mv = {};
+      var mv = 'a';
       beat.value('myValue', mv);
       expect(beat.get('myValue')).to.be.equal(mv);
     });
+    it('.value method should overwrite previously defined value', function(){
+      var v1 = 'a';
+      var v2 = 'b';
+      beat.value('x', v1);
+      beat.value('x', v2);
+      expect(beat.get('x')).to.be.equal(v2);
+    });
     it('.factory method should set a factory function of a value', function(){
-      var mv = {};
+      var mv = 'a';
       var stub = sinon.stub().returns(mv);
       beat.factory('myValue', stub);
       expect(beat.get('myValue')).to.be.equal(mv);
       expect(stub.calledOn(beat)).to.be.equal(true);
       expect(stub.calledWith()).to.be.equal(true);
+    });
+    it('.factory method should overwrite previously defined factory', function(){
+      var v1 = 'a';
+      var v2 = 'b';
+      beat.factory('x', sinon.stub().returns(v1));
+      beat.factory('x', sinon.stub().returns(v2));
+      expect(beat.get('x')).to.be.equal(v2);
+    });
+    it('last definition should overwrite previously defined ones', function(){
+      var v1 = 'a';
+      var v2 = 'b';
+      beat.value('x', v1);
+      beat.factory('x', sinon.stub().returns(v2));
+      expect(beat.get('x')).to.be.equal(v2);
     });
     it('factories should be called once', function(){
       var stub = sinon.stub().returns({});
@@ -41,8 +62,8 @@ describe('Beat', function(){
       expect(stub.calledOnce).to.be.equal(true);
     });
     it('.run method should be able to require values, including fabricated ones', function(done){
-      var x = {};
-      var y = {};
+      var x = 'a';
+      var y = 'b';
       beat.value('myValue', x);
       beat.factory('myFabricatedValue', sinon.stub().returns(y));
       beat.run(function(myFabricatedValue, myValue){
@@ -52,9 +73,9 @@ describe('Beat', function(){
       });
     });
     it('factories should be able to require values, including fabricated ones', function(done){
-      var x = {};
-      var y = {};
-      var z = {};
+      var x = 'a';
+      var y = 'b';
+      var z = 'c';
       beat.value('myValue', x);
       beat.factory('myFabricatedValue', sinon.stub().returns(y));
       beat.factory('test', function(myFabricatedValue, myValue){
@@ -81,8 +102,8 @@ describe('Beat', function(){
     
     // array declaration
     it('.run method should be able to deal with an array for declaring dependencies', function(done){
-      var x = {};
-      var y = {};
+      var x = 'a';
+      var y = 'b';
       beat.value('myValue', x);
       beat.factory('myFabricatedValue', sinon.stub().returns(y));
       beat.run(['myFabricatedValue', 'myValue', function(a, b){
@@ -92,8 +113,8 @@ describe('Beat', function(){
       }]);
     });
     it('.factory method should be able to deal with an array for declaring dependencies', function(done){
-      var x = {};
-      var y = {};
+      var x = 'a';
+      var y = 'b';
       beat.value('myValue', x);
       beat.factory('myFabricatedValue', sinon.stub().returns(y));
       beat.factory('z', ['myFabricatedValue', 'myValue', function(a, b){
@@ -106,8 +127,8 @@ describe('Beat', function(){
     
     // comment aliases
     it('.run method should be able to deal with comments for declaring dependencies', function(done){
-      var x = {};
-      var y = {};
+      var x = 'a';
+      var y = 'b';
       beat.value('myValue', x);
       beat.factory('myFabricatedValue', sinon.stub().returns(y));
       beat.run(function(/* myFabricatedValue */ a, /* myValue */ b){
@@ -117,8 +138,8 @@ describe('Beat', function(){
       });
     });
     it('.factory method should be able to deal with comments for declaring dependencies', function(done){
-      var x = {};
-      var y = {};
+      var x = 'a';
+      var y = 'b';
       beat.value('myValue', x);
       beat.factory('myFabricatedValue', sinon.stub().returns(y));
       beat.factory('z', function(/* myFabricatedValue */ a, /* myValue */ b){
@@ -129,8 +150,8 @@ describe('Beat', function(){
       beat.get('z');
     });
     it('.load method should import properties from a beat instance', function(done){
-      var x = {};
-      var y = {};
+      var x = 'a';
+      var y = 'b';
       var anotherBeat = new Beat('another');
       anotherBeat.value('myValueX', x);
       anotherBeat.value('myValueY', y);
@@ -142,8 +163,8 @@ describe('Beat', function(){
       });
     });
     it('.load method should import factories from a beat instance', function(done){
-      var x = {};
-      var y = {};
+      var x = 'a';
+      var y = 'b';
       var anotherBeat = new Beat('another');
       anotherBeat.factory('myValueX', function(){return x;});
       anotherBeat.factory('myValueY', function(){return y;});
@@ -155,7 +176,7 @@ describe('Beat', function(){
       });
     });
     it('.load method should import factories with dependencies from a beat instance', function(done){
-      var x = {};
+      var x = 'a';
       var anotherBeat = new Beat('another');
       anotherBeat.factory('generateX', function(X){return X;});
       anotherBeat.value('X', x);

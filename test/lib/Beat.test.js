@@ -1,5 +1,6 @@
 var ModuleReference = require('../../lib/ModuleReference');
 var Block = require('../../lib/Block');
+var Scope = require('../../lib/Scope');
 var Beat = require('../../');
 
 describe('Beat', function(){
@@ -12,12 +13,27 @@ describe('Beat', function(){
       beat = new Beat();
     });
     
+    // scope
+    it('should have its own scope', function(){
+      var testValue = ':)';
+      var scope;
+      beat.factory('lol', function(){
+        expect(this).to.be.an.instanceof(Scope);
+        this.x = testValue;
+        scope = this;
+      });
+      beat.run(function(lol){
+        expect(this).to.be.equal(scope);
+        expect(this.x).to.be.equal(testValue);
+      });
+    });
+    
     // basics
     it('.run method should recieve and execute a function', function(){
       var spy = sinon.spy();
       beat.run(spy);
       expect(spy.calledOnce).to.be.equal(true);
-      expect(spy.calledOn(beat)).to.be.equal(true);
+      expect(spy.calledOn(beat.scope)).to.be.equal(true);
       expect(spy.calledWith()).to.be.equal(true);
     });
     it('.value method should set a value to be obtained by .get', function(){
@@ -37,7 +53,7 @@ describe('Beat', function(){
       var stub = sinon.stub().returns(mv);
       beat.factory('myValue', stub);
       expect(beat.get('myValue')).to.be.equal(mv);
-      expect(stub.calledOn(beat)).to.be.equal(true);
+      expect(stub.calledOn(beat.scope)).to.be.equal(true);
       expect(stub.calledWith()).to.be.equal(true);
     });
     it('.factory method should overwrite previously defined factory', function(){

@@ -40,8 +40,6 @@ var Beat = require('beat');
 
 To produce the instance, `Beat` should be called with `new` operator.
 
-The `alias` argument identifies it, useful for debugging in case of errors.
-
 ```js
 var myServer = new Beat('server');
 ```
@@ -122,14 +120,6 @@ The injector looks up tokens based on argument names:
 ```js
 myServer.run(function(server, port) {
   // will inject objects bound to 'server' and 'port' tokens
-});
-```
-
-You can also use comments:
-
-```js
-myServer.run(function(/* httpServer */ server, /* serverPort */ port) {
-  // will inject objects bound to 'http' and 'serverPort' tokens
 });
 ```
 

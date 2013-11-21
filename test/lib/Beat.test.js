@@ -1,5 +1,3 @@
-var Block = require('../../lib/Block');
-var Scope = require('../../lib/Scope');
 var Beat = require('../../');
 
 describe('Beat', function(){
@@ -12,27 +10,11 @@ describe('Beat', function(){
       beat = new Beat();
     });
     
-    // scope
-    it('should have its own scope', function(){
-      var testValue = ':)';
-      var scope;
-      beat.factory('lol', function(){
-        expect(this).to.be.an.instanceof(Scope);
-        this.x = testValue;
-        scope = this;
-      });
-      beat.run(function(lol){
-        expect(this).to.be.equal(scope);
-        expect(this.x).to.be.equal(testValue);
-      });
-    });
-    
     // basics
     it('.run method should recieve and execute a function', function(){
       var spy = sinon.spy();
       beat.run(spy);
       expect(spy.calledOnce).to.be.equal(true);
-      expect(spy.calledOn(beat.scope)).to.be.equal(true);
       expect(spy.calledWith()).to.be.equal(true);
     });
     it('.value method should set a value to be obtained by .get', function(){
@@ -52,7 +34,6 @@ describe('Beat', function(){
       var stub = sinon.stub().returns(mv);
       beat.factory('myValue', stub);
       expect(beat.get('myValue')).to.be.equal(mv);
-      expect(stub.calledOn(beat.scope)).to.be.equal(true);
       expect(stub.calledWith()).to.be.equal(true);
     });
     it('.factory method should overwrite previously defined factory', function(){
@@ -140,30 +121,6 @@ describe('Beat', function(){
       beat.get('z');
     });
     
-    // comment aliases
-    it('.run method should be able to deal with comments for declaring dependencies', function(done){
-      var x = 'a';
-      var y = 'b';
-      beat.value('myValue', x);
-      beat.factory('myFabricatedValue', sinon.stub().returns(y));
-      beat.run(function(/* myFabricatedValue */ a, /* myValue */ b){
-        expect(a).to.be.equal(y);
-        expect(b).to.be.equal(x);
-        done();
-      });
-    });
-    it('.factory method should be able to deal with comments for declaring dependencies', function(done){
-      var x = 'a';
-      var y = 'b';
-      beat.value('myValue', x);
-      beat.factory('myFabricatedValue', sinon.stub().returns(y));
-      beat.factory('z', function(/* myFabricatedValue */ a, /* myValue */ b){
-        expect(a).to.be.equal(y);
-        expect(b).to.be.equal(x);
-        done();
-      });
-      beat.get('z');
-    });
     it('.load method should import properties from a beat instance', function(done){
       var x = 'a';
       var y = 'b';

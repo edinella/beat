@@ -40,8 +40,6 @@ var Beat = require('beat');
 
 To produce the instance, `Beat` should be called with `new` operator.
 
-The `alias` argument identifies it, useful for debugging in case of errors.
-
 ```js
 var myServer = new Beat('server');
 ```
@@ -125,14 +123,6 @@ myServer.run(function(server, port) {
 });
 ```
 
-You can also use comments:
-
-```js
-myServer.run(function(/* httpServer */ server, /* serverPort */ port) {
-  // will inject objects bound to 'http' and 'serverPort' tokens
-});
-```
-
 You can also use a array:
 
 ```js
@@ -208,6 +198,9 @@ routes.loadModules([
   '/lib/app'
 ]);
 ```
+
+### Inspiration
+[Angular.js DI](http://docs.angularjs.org/guide/di)
 
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/edinella/beat/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 

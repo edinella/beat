@@ -3,7 +3,7 @@
   "description": "Simple dependency injection for node",
   "author": "Ezequias Dinella <ezequias.net@gmail.com>",
   "repository": "git://github.com/edinella/beat.git",
-  "version": "0.4.3",
+  "version": "1.0.0",
   "license": "MIT",
   "main": "lib/Beat.js",
   "dependencies": {
@@ -18,11 +18,15 @@
   },
   "keywords": [
     "di",
+    "ioc",
     "dependency",
     "injection",
     "injector",
     "container",
+    "di container",
+    "ioc container",
     "dependency management",
+    "inversion of control",
     "dependency injection"
   ]
 }

@@ -1,5 +1,3 @@
-var ModuleReference = require('../../lib/ModuleReference');
-var Block = require('../../lib/Block');
 var Beat = require('../../');
 
 describe('Beat', function(){
@@ -17,7 +15,6 @@ describe('Beat', function(){
       var spy = sinon.spy();
       beat.run(spy);
       expect(spy.calledOnce).to.be.equal(true);
-      expect(spy.calledOn(beat)).to.be.equal(true);
       expect(spy.calledWith()).to.be.equal(true);
     });
     it('.value method should set a value to be obtained by .get', function(){
@@ -37,7 +34,6 @@ describe('Beat', function(){
       var stub = sinon.stub().returns(mv);
       beat.factory('myValue', stub);
       expect(beat.get('myValue')).to.be.equal(mv);
-      expect(stub.calledOn(beat)).to.be.equal(true);
       expect(stub.calledWith()).to.be.equal(true);
     });
     it('.factory method should overwrite previously defined factory', function(){
@@ -125,30 +121,6 @@ describe('Beat', function(){
       beat.get('z');
     });
     
-    // comment aliases
-    it('.run method should be able to deal with comments for declaring dependencies', function(done){
-      var x = 'a';
-      var y = 'b';
-      beat.value('myValue', x);
-      beat.factory('myFabricatedValue', sinon.stub().returns(y));
-      beat.run(function(/* myFabricatedValue */ a, /* myValue */ b){
-        expect(a).to.be.equal(y);
-        expect(b).to.be.equal(x);
-        done();
-      });
-    });
-    it('.factory method should be able to deal with comments for declaring dependencies', function(done){
-      var x = 'a';
-      var y = 'b';
-      beat.value('myValue', x);
-      beat.factory('myFabricatedValue', sinon.stub().returns(y));
-      beat.factory('z', function(/* myFabricatedValue */ a, /* myValue */ b){
-        expect(a).to.be.equal(y);
-        expect(b).to.be.equal(x);
-        done();
-      });
-      beat.get('z');
-    });
     it('.load method should import properties from a beat instance', function(done){
       var x = 'a';
       var y = 'b';
@@ -188,57 +160,60 @@ describe('Beat', function(){
     });
   });
   describe('instance dependencies', function(){
-    var originalMethod;
+    var originalLoadModules;
+    var originalRequire;
     beforeEach(function(){
-      originalMethod = Beat.prototype.loadModules;
+      originalLoadModules = Beat.prototype.loadModules;
+      originalRequire = Beat.prototype.require;
     });
     afterEach(function(){
-      Beat.prototype.loadModules = originalMethod;
+      Beat.prototype.loadModules = originalLoadModules;
+      Beat.prototype.require = originalRequire;
     });
     it('can be loaded from constructor', function(){
-      var dependencies = [];
       Beat.prototype.loadModules = function(modulesInfo){
         expect(modulesInfo).to.be.equal(dependencies);
       };
+      var dependencies = [];
       var beat = new Beat('a', dependencies);
     });
     it('can be a reference to a beat module', function(){
+      Beat.prototype.require = function(path){
+        if(path == 'beatA') return beatA;
+      };
       var testValue = {};
       var beatA = new Beat('a');
       beatA.value('x', testValue);
-      ModuleReference.prototype._require = function(path){
-        if(path == 'beatA') return beatA;
-      };
       var beatB = new Beat('b');
       beatB.loadModules(['beatA']);
       expect(beatB.get('x')).to.be.equal(testValue);
     });
     it('can be a reference to any other module', function(){
-      var testValue = {};
-      ModuleReference.prototype._require = function(path){
+      Beat.prototype.require = function(path){
         if(path == 'anyModule') return testValue;
       };
+      var testValue = {};
       var beat = new Beat('myBeat');
       beat.loadModules(['anyModule']);
       expect(beat.get('anyModule')).to.be.equal(testValue);
     });
     it('can be a reference to any other module with an alias', function(){
-      var testValue = {};
-      ModuleReference.prototype._require = function(path){
+      Beat.prototype.require = function(path){
         if(path == 'anyModule') return testValue;
       };
+      var testValue = {};
       var beat = new Beat('myBeat');
       beat.loadModules([{yes: 'anyModule'}]);
       expect(beat.get('yes')).to.be.equal(testValue);
     });
     it('can be file paths rooted as the process', function(){
-      var testValue = {};
-      var beatA = new Beat('a');
-      beatA.loadModules([{pkg: '/package'}]);
-      ModuleReference.prototype._require = function(path){
+      Beat.prototype.require = function(path){
         expect(path).to.be.equal(process.cwd()+'/package');
         return testValue;
       };
+      var testValue = {};
+      var beatA = new Beat('a');
+      beatA.loadModules([{pkg: '/package'}]);
       expect(beatA.get('pkg')).to.be.equal(testValue);
     });
   });

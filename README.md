@@ -199,6 +199,9 @@ routes.loadModules([
 ]);
 ```
 
+### Inspiration
+[Angular.js DI](http://docs.angularjs.org/guide/di)
+
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/edinella/beat/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
 [![githalytics.com alpha](https://cruel-carlota.pagodabox.com/b05323c0f01a424058eff9ee1e6cce63 "githalytics.com")](http://githalytics.com/edinella/beat)

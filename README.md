@@ -3,6 +3,8 @@ Simple dependency injection for node
 
 [![NPM](https://nodei.co/npm/beat.png)](https://npmjs.org/package/beat)
 
+> Enjoy also the [beat-conf](https://npmjs.org/package/beat-conf), configuration utility for Beat
+
 ```js
 var Beat = require('beat');
 var app = new Beat('app');

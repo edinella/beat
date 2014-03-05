@@ -190,7 +190,7 @@ routes.factory('routes', function routes(app, authMiddleware, ProductsModel){
 });
 ```
 
-Is also possible to load dependencies after construction, with the same sintax:
+Is also possible to load dependencies after construction, with the same syntax:
 
 ```js
 var Beat = require('beat');

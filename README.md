@@ -117,7 +117,7 @@ myServer.run(function(app, port){
 
 ### Annotation
 
-Methods `run` and `factory` can recieve annotated functions as arguments, that will be used for injection.
+Methods `run` and `factory` can receive annotated functions as arguments, that will be used for injection.
 
 The injector looks up tokens based on argument names:
 
@@ -190,7 +190,7 @@ routes.factory('routes', function routes(app, authMiddleware, ProductsModel){
 });
 ```
 
-Is also possible to load dependencies after construction, with the same sintax:
+Is also possible to load dependencies after construction, with the same syntax:
 
 ```js
 var Beat = require('beat');

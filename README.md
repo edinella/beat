@@ -117,7 +117,7 @@ myServer.run(function(app, port){
 
 ### Annotation
 
-Methods `run` and `factory` can recieve annotated functions as arguments, that will be used for injection.
+Methods `run` and `factory` can receive annotated functions as arguments, that will be used for injection.
 
 The injector looks up tokens based on argument names:
 
